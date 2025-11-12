@@ -6,19 +6,19 @@ namespace HealthResilienceDemo.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CustomerController : ControllerBase
+public class customerController : ControllerBase
 {
     private readonly AppDbContext _db;
-    public CustomerController(AppDbContext db) => _db = db;
+    public customerController(AppDbContext db) => _db = db;
 
     [HttpGet]
-    public async Task<IActionResult> GetCustomers() => Ok(await _db.Customers.ToListAsync());
+    public async Task<IActionResult> Getcustomers() => Ok(await _db.customers.ToListAsync());
 
     [HttpPost]
-    public async Task<IActionResult> AddCustomer([FromBody] Customer c)
+    public async Task<IActionResult> Addcustomer([FromBody] customer c)
     {
-        _db.Customers.Add(c);
+        _db.customers.Add(c);
         await _db.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetCustomers), new { id = c.Id }, c);
+        return CreatedAtAction(nameof(Getcustomers), new { id = c.Id }, c);
     }
 }

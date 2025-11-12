@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<!-- Swagger / OpenAPI -->
 		<PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="9.0.0" />
+		<PackageReference Include="MailKit" Version="4.14.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 
 		<!-- Entity Framework Core (PostgreSQL + Design tools) -->

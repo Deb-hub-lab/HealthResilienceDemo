@@ -1,5 +1,7 @@
 ﻿using HealthChecks.UI.Client;
+using HealthResilienceDemo.API;
 using HealthResilienceDemo.API.Data;
+using HealthResilienceDemo.API.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -12,6 +14,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<EmailService>();
+
+
+// Bind SMTP and publisher config from appsettings.json
+builder.Services.Configure<EmailSmtpOptions>(builder.Configuration.GetSection("Smtp"));
+builder.Services.Configure<HealthCheckPublisherOptionsCustom>(builder.Configuration.GetSection("HealthCheckPublisher"));
+
+// Register the publisher as a singleton that will be called by the HealthCheckPublisherService
+builder.Services.AddSingleton<IHealthCheckPublisher, EmailNotificationPublisher>();
+
+// Configure the built-in publisher background service timing
+builder.Services.Configure<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckPublisherOptions>(options =>
+{
+    // Delay first run after app start
+    options.Delay = TimeSpan.FromSeconds(builder.Configuration.GetValue<int>("HealthCheckPublisher:DelaySeconds", 5));
+    // Period between runs
+    options.Period = TimeSpan.FromSeconds(builder.Configuration.GetValue<int>("HealthCheckPublisher:PeriodSeconds", 30));
+    // Run on change only - set to false to always run every period
+    options.Predicate = report => true;
+});
 
 // 2️⃣ Database Context (PostgreSQL)
 builder.Services.AddDbContext<AppDbContext>(options =>

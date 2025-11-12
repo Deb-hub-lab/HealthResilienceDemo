@@ -9,10 +9,10 @@ namespace HealthResilienceDemo.API.Data
         {
         }
 
-        public DbSet<Customer> Customers { get; set; } = default!;
+        public DbSet<customer> customers { get; set; } = default!;
     }
 
-    public class Customer
+    public class customer
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
