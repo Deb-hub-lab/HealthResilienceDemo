@@ -1,4 +1,4 @@
-# HealthResilienceDemo (.NET 8) Omm maa tarini saha
+# HealthResilienceDemo (.NET 8) Omm maa tarini saha. Jay maa tarini
 
 ## Overview
 Minimal sample .NET 8 Web API demonstrating:
